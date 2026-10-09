@@ -828,6 +828,58 @@ a.activity-card__cta:hover {
   color: var(--text-soft);
 }
 
+/* ---------- 回到顶部悬浮按钮 ---------- */
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 26px;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--caramel-500), var(--toast-600));
+  box-shadow: 0 6px 16px rgba(192, 127, 54, 0.28);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  animation: back-to-top-in 0.2s ease forwards;
+}
+
+.back-to-top:hover {
+  box-shadow: 0 10px 22px rgba(192, 127, 54, 0.34);
+  transform: translateY(-1px);
+}
+
+@keyframes back-to-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 560px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 18px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
 /* ---------- 提示条与页脚 ---------- */
 .banner {
   display: flex;
@@ -893,8 +945,12 @@ a.activity-card__cta:hover {
   }
 
   .activity-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .activity-card__cover {
+    aspect-ratio: 16 / 9;
   }
 }
 

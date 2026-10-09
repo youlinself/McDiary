@@ -12,6 +12,32 @@ import { buildNutritionIndex, computeIntake } from "./utils/nutrition";
 
 type View = "calendar" | "profile";
 
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setVisible(window.scrollY > 300);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      type="button"
+      className="back-to-top"
+      aria-label="回到顶部"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    >
+      ↑
+    </button>
+  );
+}
+
 export default function App() {
   const [view, setView] = useState<View>("calendar");
   const [orders, setOrders] = useState<Order[]>([]);
@@ -146,6 +172,7 @@ export default function App() {
           <span>麦麦日记 McDiary · 数据来自麦当劳 MCP</span>
           <span>餐品信息与价格以麦当劳官方渠道的实时结果为准</span>
         </footer>
+        <BackToTop />
       </div>
     );
   }
@@ -222,6 +249,7 @@ export default function App() {
         <span>麦麦日记 McDiary · 数据来自麦当劳 MCP（order-list / campaign-calendar / list-nutrition-foods）</span>
         <span>餐品信息与价格以麦当劳官方渠道的实时结果为准</span>
       </footer>
+      <BackToTop />
     </div>
   );
 }
