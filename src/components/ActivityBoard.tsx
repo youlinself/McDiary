@@ -39,28 +39,57 @@ export function ActivityBoard({ date, events }: ActivityBoardProps) {
   const handleSchemeJump = (url: string) => (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     let settled = false;
+    let jumpFailed = false;
     let timer = 0;
+    const originalConsoleError = console.error;
+
+    const isJumpError = (...args: unknown[]) => {
+      const msg = args.map((a) => (typeof a === "string" ? a : String(a))).join(" ");
+      return (
+        msg.includes("Failed to launch") ||
+        msg.includes("scheme is not registered") ||
+        msg.includes("cannot open the page") ||
+        msg.includes("addr is not valid")
+      );
+    };
+
+    const onConsoleError = (...args: unknown[]) => {
+      if (isJumpError(...args)) {
+        jumpFailed = true;
+        settled = true;
+        setShowAppTip(true);
+      }
+      originalConsoleError.apply(console, args);
+    };
+
     const onBlur = () => {
       settled = true;
       setShowAppTip(false);
     };
+
     const onVisibility = () => {
       if (document.hidden) {
         settled = true;
         setShowAppTip(false);
       }
     };
+
     const cleanup = () => {
       window.removeEventListener("blur", onBlur);
       document.removeEventListener("visibilitychange", onVisibility);
       window.clearTimeout(timer);
+      console.error = originalConsoleError;
     };
+
     timer = window.setTimeout(() => {
       cleanup();
-      if (!settled && !document.hidden) setShowAppTip(true);
-    }, 1500);
+      if (jumpFailed) setShowAppTip(true);
+      else if (!settled && !document.hidden) setShowAppTip(true);
+    }, 2500);
+
     window.addEventListener("blur", onBlur);
     document.addEventListener("visibilitychange", onVisibility);
+    console.error = onConsoleError;
     window.location.href = url;
   };
 

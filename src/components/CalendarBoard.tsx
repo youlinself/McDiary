@@ -87,16 +87,12 @@ export function CalendarBoard({
               onClick={() => onSelectDate(ymd)}
             >
               <span className="day__num">{date.getDate()}</span>
-              <span className="day__markers">
-                {agg ? <span className="day__spend">¥{formatMoney(agg.total)}</span> : null}
-                {events.length > 0 ? (
-                  <span className="day__dots">
-                    {events.slice(0, 3).map((event, index) => (
-                      <i key={`${event.activityCode}-${index}`} />
-                    ))}
-                  </span>
-                ) : null}
-              </span>
+              {agg ? (
+                <span className="day__spend">¥{formatMoney(agg.total)}</span>
+              ) : null}
+              {events.length > 0 ? (
+                <span className="day__activity-dot" aria-label="有活动" />
+              ) : null}
             </button>
           );
         })}

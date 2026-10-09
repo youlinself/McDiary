@@ -289,6 +289,7 @@ body {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
+
 }
 
 .day {
@@ -348,22 +349,29 @@ body {
 }
 
 .day__spend {
-  font-size: 11px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 1px 7px;
+  padding: 2px 6px;
   border-radius: 999px;
   background: rgba(228, 87, 46, 0.12);
   color: var(--jam-500);
+  white-space: pre-wrap;
+  width: fit-content;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% - 10px);
 }
 
-.day__dots {
-  display: flex;
-  gap: 3px;
-}
-
-.day__dots i {
-  width: 6px;
-  height: 6px;
+.day__activity-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--lettuce-500);
   display: block;
@@ -930,13 +938,21 @@ a.activity-card__cta:hover {
     font-size: 22px;
   }
 
+  .panel{
+    padding: 14px;
+  }
+
   .day {
-    min-height: 60px;
-    padding: 6px;
+    min-height: 52px;
+    padding: 5px;
   }
 
   .day__spend {
     font-size: 10px;
+    max-width: 100%;
+    left: 0;
+    background: transparent;
+    padding: 2px;
   }
 
   .topbar__actions {
@@ -951,6 +967,10 @@ a.activity-card__cta:hover {
 
   .activity-card__cover {
     aspect-ratio: 16 / 9;
+  }
+
+  .calendar__grid {
+    gap: 2px;
   }
 }
 
