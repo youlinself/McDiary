@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "麦麦日记 McDiary — 基于麦当劳 MCP 的消费日历与健康营养记录应用",
+  "engines": {
+    "node": ">=20.12.0"
+  },
   "scripts": {
     "dev": "concurrently -n web,api -c yellow,magenta \"npm:dev:web\" \"npm:dev:server\"",
     "dev:web": "vite",
