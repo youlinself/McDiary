@@ -616,6 +616,18 @@ body {
   margin: 0;
 }
 
+.activity-board__head-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-board__toggle {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
 .activity-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));

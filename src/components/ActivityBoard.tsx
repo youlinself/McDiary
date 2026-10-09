@@ -22,6 +22,7 @@ function isSafeJumpUrl(url: string): boolean {
 
 export function ActivityBoard({ date, events }: ActivityBoardProps) {
   const [showAppTip, setShowAppTip] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
     if (!showAppTip) return;
@@ -97,7 +98,27 @@ export function ActivityBoard({ date, events }: ActivityBoardProps) {
     <div className="activity-board">
       <div className="activity-board__head">
         <h3 className="panel__title">🎉 麦麦活动</h3>
-        {events.length > 0 ? <span className="badge">{events.length} 个活动</span> : null}
+        <div className="activity-board__head-right">
+          {events.length > 0 ? <span className="badge">{events.length} 个活动</span> : null}
+          <button
+            type="button"
+            className={`btn btn--icon activity-board__toggle ${isExpanded ? "is-expanded" : ""}`}
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-label={isExpanded ? "收起活动列表" : "展开活动列表"}
+            title={isExpanded ? "收起" : "展开"}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+            >
+              <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       {showAppTip ? (
@@ -131,7 +152,7 @@ export function ActivityBoard({ date, events }: ActivityBoardProps) {
         </div>
       ) : null}
 
-      {events.length > 0 ? (
+      {isExpanded && events.length > 0 ? (
         <div className="activity-grid">
           {events.map((event, index) => {
             const article = event.articleDto ?? {};
@@ -179,9 +200,9 @@ export function ActivityBoard({ date, events }: ActivityBoardProps) {
             );
           })}
         </div>
-      ) : (
+      ) : isExpanded ? (
         <p className="empty">{formatDateCN(date)} 暂无活动信息</p>
-      )}
+      ) : null}
     </div>
   );
 }
