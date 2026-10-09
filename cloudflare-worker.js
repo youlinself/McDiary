@@ -1,12 +1,5 @@
 const DEFAULT_MCP_URL = "https://mcp.mcd.cn";
 
-const TOOL_MAP = {
-  "/api/orders": "order-list",
-  "/api/calendar": "campaign-calendar",
-  "/api/nutrition": "list-nutrition-foods",
-  "/api/now": "now-time-info",
-};
-
 export default {
   async fetch(request, env) {
     const corsHeaders = {
@@ -23,8 +16,7 @@ export default {
     const path = url.pathname;
     const mcpUrl = env.MCP_URL || DEFAULT_MCP_URL;
 
-    const toolName = TOOL_MAP[path];
-    if (!toolName) {
+    if (path !== "/api/mcp") {
       return new Response(JSON.stringify({ error: "Not Found" }), {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -41,6 +33,7 @@ export default {
     }
 
     try {
+      const body = await request.text();
       const mcpResponse = await fetch(mcpUrl, {
         method: "POST",
         headers: {
@@ -48,12 +41,7 @@ export default {
           Accept: "application/json, text/event-stream",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          id: Date.now(),
-          method: "tools/call",
-          params: { name: toolName, arguments: {} },
-        }),
+        body,
       });
 
       const data = await mcpResponse.text();

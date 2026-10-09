@@ -10,6 +10,7 @@ const TOKEN_KEY = "mcdiary_mcp_token";
 const MCP_URL_KEY = "mcdiary_mcp_url";
 const DEFAULT_MCP_URL = "https://mcp.mcd.cn";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const isDevelopment = import.meta.env.DEV;
 
 function getStoredToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -98,7 +99,14 @@ function clearCache() {
 }
 
 async function callMcpTool(toolName: string, token: string): Promise<unknown> {
-  const url = API_BASE_URL ? `${API_BASE_URL}/api/${toolName === "order-list" ? "orders" : toolName === "campaign-calendar" ? "calendar" : toolName === "list-nutrition-foods" ? "nutrition" : "now"}` : getEffectiveMcpUrl();
+  let url: string;
+  if (isDevelopment) {
+    url = "/api/mcp";
+  } else if (API_BASE_URL) {
+    url = `${API_BASE_URL}/api/mcp`;
+  } else {
+    url = getEffectiveMcpUrl();
+  }
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

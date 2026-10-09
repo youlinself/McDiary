@@ -7,9 +7,15 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/api": {
-        target: "http://localhost:3000",
+      "/api/mcp": {
+        target: "https://mcp.mcd.cn",
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/mcp/, ""),
+        configure: (proxy) => {
+          proxy.on("proxyReq", (proxyReq) => {
+            proxyReq.setHeader("Accept", "application/json, text/event-stream");
+          });
+        },
       },
     },
   },
